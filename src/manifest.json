@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Guides",
+  "description": "Simple generator draggable guides. Double-click on the rules to create a new guide. Press ESC to close.",
+  "version": "0.0.2",
+  "permissions": [
+    "activeTab"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_title": "Make this page red"
+  },
+  "web_accessible_resources": [
+    "images/hruler.png",
+    "images/vruler.png"
+  ],
+  "icons": {
+    "19":   "images/icons/icon19.png",
+    "48":   "images/icons/icon48.png",
+    "128":  "images/icons/icon128.png"
+  }
+}
