@@ -1,0 +1,146 @@
+/* General */
+body::selection{
+  background:transparent;
+}
+
+// Guides component
+.vollguides {
+  $root: &;
+
+  // Overlay
+  &__overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 15px;
+    left: 15px;
+    bottom: 0;
+    right: 0;
+    opacity: .35;
+    background-color: black;
+    z-index: 170000;
+    cursor: crosshair
+  }
+
+  // Tooltip
+  &__tooltip {
+    background: black;
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: white;
+    position: absolute;
+    z-index: 22000;
+    font-size: 10px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+
+    &::selection {
+      background: transparent;
+    }
+  }
+
+  // Righelli
+  &__rule {
+    position: fixed;
+    z-index: 1999999999;
+    background-color: white;
+
+    // Orizzontale
+    &--h {
+      height: 15px;
+      width: 100%;
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/hruler.png');
+      left: 15px;
+      right: 0;
+      top: 0;
+
+      &:hover {
+        cursor: s-resize;
+      }
+    }
+
+    // Veticale
+    &--v {
+      height: 100%;
+      width: 15px;
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/vruler.png');
+      top: 15px;
+      bottom: 0;
+      left: 0;
+
+      &:hover {
+        cursor: e-resize;
+      }
+    }
+
+    // Indicatori
+    &-pointer {
+      position: absolute;
+      background-color: red;
+      display: block;
+
+      #{$root}__rule--h & {
+        width: 1px;
+        height: 15px;
+        top: 0;
+      }
+
+      #{$root}__rule--v & {
+        width: 15px;
+        height: 1px;
+        left: 0;
+
+      }
+
+    }
+
+  }
+
+  // Guide
+  &__line {
+    position: fixed;
+    cursor: pointer;
+    z-index: 190000;
+    display: none;
+
+    &:after {
+      display: block;
+      position: absolute;
+      content: '';
+      background: #4affff;
+    }
+
+    // Contenitore Linea orizzontale
+    &--h {
+      height: 5px;
+      width: 100%;
+      left: 15px;
+      cursor: ns-resize;
+
+      &:after { // linea azzurra orizzontale
+        height: 1px;
+        width: 100%;
+        top: 2px;
+        left: 0;
+      }
+    }
+
+    &--v {
+      height: 100%;
+      width: 5px;
+      top: 15px;
+      cursor: ew-resize;
+
+      &:after {
+        height: 100%;
+        width: 1px;
+        left: 2px;
+        top: 0;
+      }
+
+    }
+
+  }
+
+}
