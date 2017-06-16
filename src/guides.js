@@ -38,7 +38,8 @@
 
     // Salvo il body e invoco il render
     init: function () {
-      this.bodyElem = document.querySelector('body');
+      this.bodyElem   = document.querySelector('body');
+
       this.render()
     },
 
@@ -55,29 +56,38 @@
                         '</div>' +
                       '</div>';
 
+
       // Appendo il template al body del sito
       this.bodyElem.innerHTML = template;
 
 
       // Doppio click su una guida invoco octopus per aggiornare l'array delle guide
+      var guideWrap  = document.querySelector('.vollguides');
       var rules = document.querySelectorAll('.vollguides__rule');
+      var guide = '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>';
 
       for (var i = 0 ; i < rules.length; i++) {
-        rules[i].addEventListener('click', (function(catCopy) {
+        rules[i].addEventListener('click', (function(g) {
 
+          return function() {
 
-          document.querySelector('.vollguides')
-            .appendChild(document.createElement("div"))
-            .className = "vollguides__line vollguides__line--h";
+            //document.querySelector('.vollguides').appendChild(guide);
+            guideWrap.insertAdjacentHTML('beforeend', guide);
 
-          //var guide = document.createElement('<div>');
-          //document.querySelector('.vollguides').appendChild(guide);
+            // attribuisco la classe in base alla guida cliccata
+            if (g.classList.contains('vollguides__rule--h')) {
+              $( ".vollguides" ).find('> div').last().addClass('vollguides__line--h');
+              //document.querySelector('.vollguides').querySelectorAll(".vollguides>div").lastChild.classList.add('vollguides__line--h');
+            } else {
+              $( ".vollguides" ).find('> div').last().addClass('vollguides__line--v');
+              //document.querySelector('.vollguides').querySelectorAll(".vollguides>div").lastChild.classList.add('vollguides__line--v');
+            }
 
-          // attribuisco la classe in base alla guida cliccata
+            // aggiorno l'array
+            
+          }
 
-
-          //octopus.updateCounter(currentCat);
-        }))
+        })(rules[i]));
       }
 
 

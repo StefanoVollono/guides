@@ -102,37 +102,39 @@ body::selection{
     position: fixed;
     cursor: pointer;
     z-index: 190000;
-    display: none;
-
-    &:after {
-      display: block;
-      position: absolute;
-      content: '';
-      background: #4affff;
-    }
 
     // Contenitore Linea orizzontale
     &--h {
       height: 5px;
       width: 100%;
       left: 15px;
+      top: 30px;
       cursor: ns-resize;
-
-      &:after { // linea azzurra orizzontale
-        height: 1px;
-        width: 100%;
-        top: 2px;
-        left: 0;
-      }
     }
 
     &--v {
       height: 100%;
       width: 5px;
       top: 15px;
+      left: 30px;
       cursor: ew-resize;
+    }
 
-      &:after {
+    // linea azzurra
+    &-inner {
+      display: block;
+      position: absolute;
+      content: '';
+      background: #4affff;
+
+      #{$root}__line--h & {
+        height: 1px;
+        width: 100%;
+        top: 2px;
+        left: 0;
+      }
+
+      #{$root}__line--v & {
         height: 100%;
         width: 1px;
         left: 2px;

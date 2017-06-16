@@ -64,29 +64,30 @@ body::selection {
 .vollguides__line {
   position: fixed;
   cursor: pointer;
-  z-index: 190000;
-  display: none; }
-  .vollguides__line:after {
-    display: block;
-    position: absolute;
-    content: '';
-    background: #4affff; }
+  z-index: 190000; }
   .vollguides__line--h {
     height: 5px;
     width: 100%;
     left: 15px;
+    top: 30px;
     cursor: ns-resize; }
-    .vollguides__line--h:after {
-      height: 1px;
-      width: 100%;
-      top: 2px;
-      left: 0; }
   .vollguides__line--v {
     height: 100%;
     width: 5px;
     top: 15px;
+    left: 30px;
     cursor: ew-resize; }
-    .vollguides__line--v:after {
+  .vollguides__line-inner {
+    display: block;
+    position: absolute;
+    content: '';
+    background: #4affff; }
+    .vollguides__line--h .vollguides__line-inner {
+      height: 1px;
+      width: 100%;
+      top: 2px;
+      left: 0; }
+    .vollguides__line--v .vollguides__line-inner {
       height: 100%;
       width: 1px;
       left: 2px;
