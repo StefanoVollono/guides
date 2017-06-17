@@ -3,6 +3,7 @@
   "name": "Guides",
   "description": "Simple generator draggable guides. Double-click on the rules to create a new guide. Press ESC to close.",
   "version": "1.2",
+  "homepage_url": "https://github.com/StefanoVollono/guides",
   "permissions": [
     "activeTab"
   ],
