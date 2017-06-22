@@ -40,7 +40,7 @@
       model.guides.push(g);
 
       // renderizzo le view
-      view.render();
+      guidesWiew.render();
     }
 
   };
@@ -51,14 +51,15 @@
 
       this.bodyElem   = document.querySelector('body');
       this.template = '<div class="vollguides">' +
-                      '<div class="vollguides__overlay"></div>' +
-                      '<div class="vollguides__tooltip"></div>' +
-                      '<div class="vollguides__rule vollguides__rule--h">' +
-                      '<div class="vollguides__rule-pointer"></div>' +
-                      '</div>' +
-                      '<div class="vollguides__rule vollguides__rule--v">' +
-                      '<div class="vollguides__rule-pointer"></div>' +
-                      '</div>' +
+                        '<div class="vollguides__overlay"></div>' +
+                        '<div class="vollguides__tooltip"></div>' +
+                        '<div class="vollguides__rule vollguides__rule--h">' +
+                          '<div class="vollguides__rule-pointer"></div>' +
+                        '</div>' +
+                        '<div class="vollguides__rule vollguides__rule--v">' +
+                          '<div class="vollguides__rule-pointer"></div>' +
+                        '</div>' +
+                        '<div class="vollguides__collection"></div>' +
                       '</div>';
 
       this.render();
@@ -78,9 +79,10 @@
 
     init: function () {
 
-      this.guideWrap  = document.querySelector('.vollguides');
-      this.rules = document.querySelectorAll('.vollguides__rule');
-      this.guide = '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>';
+      this.guideWrap  = document.querySelector('.vollguides'); // wrap generale
+      this.guideCollection  = document.querySelector('.vollguides__collection'); // Contenitore delle guide
+      this.rules = document.querySelectorAll('.vollguides__rule'); // righelli
+      this.guide = '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>'; // Template della guida
 
       this.render();
 
@@ -91,36 +93,43 @@
       // Salvo le guide in una variabile locale
       var guides = octopus.getGuides();
 
-      // empty the cat list todo devo creare un wrap per le guide e ripulire solo quello
-      //this.guideWrap.innerHTML = '';
+      // empty the guide list 
+      this.guideCollection.innerHTML = '';
 
-      // Renderizzo le guide in base all'array (al primo giro non ce ne sono)
+      // Renderizzo le guide in base all'array (al primo giro non ce ne sono 2 di esempio)
       for (var i = 0; i < guides.length; i++) {
-        this.guideWrap.insertAdjacentHTML('beforeend', this.guide);
-        var last = $( ".vollguides" ).find('> div').last();
+        this.guideCollection.insertAdjacentHTML('beforeend', this.guide);
+        var last = $( ".vollguides__collection" ).find('> div').last();
         last.addClass(guides[i].type).css({top: guides[i].top, left: guides[i].left});
-      }
 
+        var guide = $( ".vollguides__line" )[i]; // salvo localmente la guida corrente
 
+        // invece del click devo implementare il drag
+        // quando finisco di draggare, devo aggiornare l'array con le nuove coordinate (invoco un metodo di octopus)
+        guide.addEventListener('click', (function(g) { 
+          return function() {
+            console.log(g.top);
+          }
 
-      /*
+        })(guides[i]));
+        
+      };
 
-      for (var i = 0 ; i < rules.length; i++) {
-        rules[i].addEventListener('click', (function(g) {
+      // Al click su un righello -> devo invocare il metodo addNewGuide che aggiorna l'array con la nuova guida.
+      // Dopo ritorno nella view e renderizzo nuovamente tutte le guide
+
+      for (var i = 0; i < this.rules.length; i++) {
+        this.rules[i].addEventListener('click', (function(e) {
 
           return function() {
+            // agiungo la classe specifica alla guida
+            var guideClass = (e.classList.contains('vollguides__rule--h') ? "vollguides__line--h" : "vollguides__line--v");
 
-            //document.querySelector('.vollguides').appendChild(guide);
-            guideWrap.insertAdjacentHTML('beforeend', guide);
-            var last = $( ".vollguides" ).find('> div').last();
+            // Aggiungo l'elemento con la classe specifica
+            //guidesWiew.guideCollection.insertAdjacentHTML('beforeend', guidesWiew.guide).classList.add(guideClass);
+            guidesWiew.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line' + guideClass + '"><div class="vollguides__line-inner"></div></div>').classList.add(guideClass);
 
-            // attribuisco la classe in base alla guida cliccata
-            if (g.classList.contains('vollguides__rule--h')) {
-              last.addClass('vollguides__line--h');
-            } else {
-              last.addClass('vollguides__line--v');
-            }
-
+            /*
             var newGuideObj = {
               type: 'vollguides__line--h',
               top: last.offset().top,
@@ -129,15 +138,12 @@
 
             // aggiorno l'array
             octopus.addNewGuide(newGuideObj);
-
+            */
           }
 
-        })(rules[i]));
+        })(this.rules[i]));
+        
       }
-      */
-
-
-
 
     }
 
