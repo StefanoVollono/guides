@@ -82,7 +82,7 @@
       this.guideWrap  = document.querySelector('.vollguides'); // wrap generale
       this.guideCollection  = document.querySelector('.vollguides__collection'); // Contenitore delle guide
       this.rules = document.querySelectorAll('.vollguides__rule'); // righelli
-      this.guide = '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>'; // Template della guida
+      //this.guide = '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>'; // Template della guida
 
       this.render();
 
@@ -90,15 +90,15 @@
 
     render: function () {
 
-      // Salvo le guide in una variabile locale
-      var guides = octopus.getGuides();
-
       // empty the guide list 
       this.guideCollection.innerHTML = '';
 
+      // Salvo le guide in una variabile locale
+      var guides = octopus.getGuides();
+
       // Renderizzo le guide in base all'array (al primo giro non ce ne sono 2 di esempio)
       for (var i = 0; i < guides.length; i++) {
-        this.guideCollection.insertAdjacentHTML('beforeend', this.guide);
+        this.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>');
         var last = $( ".vollguides__collection" ).find('> div').last();
         last.addClass(guides[i].type).css({top: guides[i].top, left: guides[i].left});
 
@@ -118,8 +118,8 @@
       // Al click su un righello -> devo invocare il metodo addNewGuide che aggiorna l'array con la nuova guida.
       // Dopo ritorno nella view e renderizzo nuovamente tutte le guide
 
-      for (var i = 0; i < this.rules.length; i++) {
-        this.rules[i].addEventListener('click', (function(e) {
+      for (var j = 0; j < this.rules.length; j++) {
+        this.rules[j].addEventListener('click', (function(e) {
 
           return function() {
             // agiungo la classe specifica alla guida
@@ -127,21 +127,24 @@
 
             // Aggiungo l'elemento con la classe specifica
             //guidesWiew.guideCollection.insertAdjacentHTML('beforeend', guidesWiew.guide).classList.add(guideClass);
-            guidesWiew.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line' + guideClass + '"><div class="vollguides__line-inner"></div></div>').classList.add(guideClass);
+            guidesWiew.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line ' + guideClass + '"><div class="vollguides__line-inner"></div></div>');
 
-            /*
+            // salvo localmente la guida creata
+            var last = $( ".vollguides__collection" ).find('> div').last();
+
+            // SALVO LOCALMENTE LE INFO DELLA GUIDA APPENA CREATA E AGGIORNO L'ARRAY
             var newGuideObj = {
-              type: 'vollguides__line--h',
+              type: guideClass,
               top: last.offset().top,
               left: last.offset().left
             }
 
             // aggiorno l'array
             octopus.addNewGuide(newGuideObj);
-            */
+            
           }
 
-        })(this.rules[i]));
+        })(this.rules[j]));
         
       }
 
