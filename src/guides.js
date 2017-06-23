@@ -84,6 +84,31 @@
       this.rules = document.querySelectorAll('.vollguides__rule'); // righelli
       //this.guide = '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>'; // Template della guida
 
+      // Al click su un righello -> devo invocare il metodo addNewGuide che aggiorna l'array con la nuova guida.
+      // Dopo ritorno nella view e renderizzo nuovamente tutte le guide
+      for (var j = 0; j < this.rules.length; j++) {
+        this.rules[j].addEventListener('click', (function(e) {
+          return function() {
+            // agiungo la classe specifica e posizioni random per top e left
+            var typeClass = (e.classList.contains('vollguides__rule--h') ? "vollguides__line--h" : "vollguides__line--v");
+            var topPos = (e.classList.contains('vollguides__rule--h') ? (25 + Math.floor(Math.random() * (100 - 15)) + 15) : 15);
+            var leftPos = (e.classList.contains('vollguides__rule--h') ? 15 : Math.floor((Math.random() * (100 - 15)) + 15));
+
+            // Salvo localemente le info realtive alla guida che sto per creare
+            var newGuideObj = {
+              type: typeClass,
+              top: topPos,
+              left: leftPos
+            };
+
+            // aggiorno l'array portandomi dietro newGuideObj
+            octopus.addNewGuide(newGuideObj);
+          }
+        })(this.rules[j]));
+        
+      }
+
+      // Renderizzo le guide
       this.render();
 
     },
@@ -102,51 +127,20 @@
         var last = $( ".vollguides__collection" ).find('> div').last();
         last.addClass(guides[i].type).css({top: guides[i].top, left: guides[i].left});
 
-        var guide = $( ".vollguides__line" )[i]; // salvo localmente la guida corrente
-
-        // invece del click devo implementare il drag
+        /* invece del click devo implementare il drag
         // quando finisco di draggare, devo aggiornare l'array con le nuove coordinate (invoco un metodo di octopus)
+        var guide = $( ".vollguides__line" )[i]; // salvo localmente la guida corrente
         guide.addEventListener('click', (function(g) { 
           return function() {
             console.log(g.top);
           }
 
         })(guides[i]));
+        */
         
       };
 
-      // Al click su un righello -> devo invocare il metodo addNewGuide che aggiorna l'array con la nuova guida.
-      // Dopo ritorno nella view e renderizzo nuovamente tutte le guide
-
-      for (var j = 0; j < this.rules.length; j++) {
-        this.rules[j].addEventListener('click', (function(e) {
-
-          return function() {
-            // agiungo la classe specifica alla guida
-            var guideClass = (e.classList.contains('vollguides__rule--h') ? "vollguides__line--h" : "vollguides__line--v");
-
-            // Aggiungo l'elemento con la classe specifica
-            //guidesWiew.guideCollection.insertAdjacentHTML('beforeend', guidesWiew.guide).classList.add(guideClass);
-            guidesWiew.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line ' + guideClass + '"><div class="vollguides__line-inner"></div></div>');
-
-            // salvo localmente la guida creata
-            var last = $( ".vollguides__collection" ).find('> div').last();
-
-            // SALVO LOCALMENTE LE INFO DELLA GUIDA APPENA CREATA E AGGIORNO L'ARRAY
-            var newGuideObj = {
-              type: guideClass,
-              top: last.offset().top,
-              left: last.offset().left
-            }
-
-            // aggiorno l'array
-            octopus.addNewGuide(newGuideObj);
-            
-          }
-
-        })(this.rules[j]));
-        
-      }
+      
 
     }
 
