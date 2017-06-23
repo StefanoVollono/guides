@@ -41,6 +41,11 @@
 
       // renderizzo le view
       guidesWiew.render();
+    },
+
+    // Aggiorno la guida modificata
+    updateGuide: function (index, obj) {
+      var pippo = this.getGuides()[index];
     }
 
   };
@@ -82,7 +87,6 @@
       this.guideWrap  = document.querySelector('.vollguides'); // wrap generale
       this.guideCollection  = document.querySelector('.vollguides__collection'); // Contenitore delle guide
       this.rules = document.querySelectorAll('.vollguides__rule'); // righelli
-      //this.guide = '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>'; // Template della guida
 
       // Al click su un righello -> devo invocare il metodo addNewGuide che aggiorna l'array con la nuova guida.
       // Dopo ritorno nella view e renderizzo nuovamente tutte le guide
@@ -91,8 +95,8 @@
           return function() {
             // agiungo la classe specifica e posizioni random per top e left
             var typeClass = (e.classList.contains('vollguides__rule--h') ? "vollguides__line--h" : "vollguides__line--v");
-            var topPos = (e.classList.contains('vollguides__rule--h') ? (25 + Math.floor(Math.random() * (100 - 15)) + 15) : 15);
-            var leftPos = (e.classList.contains('vollguides__rule--h') ? 15 : Math.floor((Math.random() * (100 - 15)) + 15));
+            var topPos = (e.classList.contains('vollguides__rule--h') ? (25 + Math.floor(Math.random() * (200 - 15)) + 15) : 15);
+            var leftPos = (e.classList.contains('vollguides__rule--h') ? 15 : Math.floor((Math.random() * (200 - 15)) + 15));
 
             // Salvo localemente le info realtive alla guida che sto per creare
             var newGuideObj = {
@@ -126,21 +130,38 @@
         this.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>');
         var last = $( ".vollguides__collection" ).find('> div').last();
         last.addClass(guides[i].type).css({top: guides[i].top, left: guides[i].left});
-
-        /* invece del click devo implementare il drag
-        // quando finisco di draggare, devo aggiornare l'array con le nuove coordinate (invoco un metodo di octopus)
-        var guide = $( ".vollguides__line" )[i]; // salvo localmente la guida corrente
-        guide.addEventListener('click', (function(g) { 
-          return function() {
-            console.log(g.top);
-          }
-
-        })(guides[i]));
-        */
-        
       };
 
-      
+      var draggableElems = document.querySelectorAll('.vollguides__line');
+      var draggies = [];
+      var typeClass;
+      var dragAxis;
+      for ( var l=0, len = draggableElems.length; l < len; l++ ) {
+        var draggableElem = draggableElems[l];
+        if(draggableElem.classList.contains('vollguides__line--h')) {
+          typeClass = 'vollguides__line--h';
+          dragAxis = 'y';
+        } else {
+          typeClass = 'vollguides__line--v';
+          dragAxis = 'x';
+        }
+        var draggie = new Draggabilly( draggableElem, {
+          axis: dragAxis
+        });
+        draggies.push(draggie);
+        draggie.on( 'dragEnd', (function(g, event, pointer ) {
+          return function() {
+            var newGuideObj = {
+              //type: typeClass,
+              //top: pointer.screenY,
+              //left: pointer.screenX
+            };
+
+            // aggiorno l'array portandomi dietro newGuideObj e la index corrente
+            octopus.updateGuide(g , newGuideObj);
+          }
+        })(draggableElems[l]));
+      }
 
     }
 
