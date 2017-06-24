@@ -45,11 +45,7 @@
 
     // Aggiorno il modello con la guida modificata
     updateGuide: function (index, obj) {
-      var my_array = this.getGuides();
-      console.log('old ' + model.guides);
-      var start_index = index
-      var removed_elements = this.getGuides().splice(index, 1, obj);
-      console.log('new ' + model.guides);
+      this.getGuides().splice(index, 1, obj);
 
       // renderizzo le view
       guidesWiew.render();
@@ -74,6 +70,8 @@
                         '<div class="vollguides__collection"></div>' +
                       '</div>';
 
+                      
+
       this.render();
 
     },
@@ -81,6 +79,30 @@
     render: function () {
 
       this.bodyElem.insertAdjacentHTML('beforeend', this.template);
+      this.guideWrap  = document.querySelector('.vollguides'); // wrap generale
+
+      var v_rule = document.querySelector('.vollguides__rule--v .vollguides__rule-pointer');
+      var h_rule = document.querySelector('.vollguides__rule--h .vollguides__rule-pointer');
+      var tooltip = document.querySelector('.vollguides__tooltip');
+
+      // puntatori righelli
+      function mousemover(e) {
+        h_rule.style.left = (e.clientX)-15 + 'px';
+        v_rule.style.top = (e.clientY)-15 + 'px';
+        tooltip.innerHTML = e.clientX + 'px // ' + e.clientY + 'px';
+        tooltip.style.top = (e.clientY)+7 + 'px';
+        tooltip.style.left = (e.clientX)+7 + 'px';
+      };
+
+      document.addEventListener('mousemove', mousemover, false);
+
+      // Destroy all
+      window.addEventListener('keydown', (function(e) {
+        if (e.which == 27) {
+          structureView.guideWrap.remove();
+        }
+      }));
+      
 
     }
 
@@ -91,14 +113,13 @@
 
     init: function () {
 
-      this.guideWrap  = document.querySelector('.vollguides'); // wrap generale
       this.guideCollection  = document.querySelector('.vollguides__collection'); // Contenitore delle guide
       this.rules = document.querySelectorAll('.vollguides__rule'); // righelli
 
       // Al click su un righello -> devo invocare il metodo addNewGuide che aggiorna l'array con la nuova guida.
       // Dopo ritorno nella view e renderizzo nuovamente tutte le guide
       for (var j = 0; j < this.rules.length; j++) {
-        this.rules[j].addEventListener('click', (function(e, index) {
+        this.rules[j].addEventListener('dblclick', (function(e, index) {
           return function() {
             // agiungo la classe specifica e posizioni random per top e left
             var typeClass = (e.classList.contains('vollguides__rule--h') ? "vollguides__line--h" : "vollguides__line--v");
@@ -171,7 +192,6 @@
         })(i);
       };
 
-
     }
 
 
@@ -179,6 +199,8 @@
 
   // make it go!
   octopus.init();
+
+  
 
 
 })();
