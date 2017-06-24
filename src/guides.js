@@ -172,51 +172,6 @@
       };
 
 
-
-
-
-
-
-
-
-
-
-
-      /*
-      var draggableElems = document.querySelectorAll('.vollguides__line');
-      var draggies = [];
-      var typeClass, dragAxis;
-      
-      for ( var l=0; l < draggableElems.length; l++ ) {
-        var draggableElem = draggableElems[l];
-        if(draggableElem.classList.contains('vollguides__line--h')) {
-          typeClass = 'vollguides__line--h';
-          dragAxis = 'y';
-        } else {
-          typeClass = 'vollguides__line--v';
-          dragAxis = 'x';
-        }
-        var draggie = new Draggabilly( draggableElem, {
-          axis: dragAxis
-        });
-        draggies.push(draggie);
-        draggie.on( 'dragEnd', (function() {
-          return function() {
-            var newGuideObj = {
-              type: typeClass,
-              top: g.offsetTop,
-              left: g.offsetLeft
-            };
-
-            var localIndex = console.log(g)
-
-            // aggiorno l'array portandomi dietro newGuideObj e la index corrente
-            octopus.updateGuide(g , newGuideObj);
-          }
-        })());
-      }
-      */
-
     }
 
 
