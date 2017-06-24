@@ -43,9 +43,9 @@
       guidesWiew.render();
     },
 
-    // Aggiorno la guida modificata
+    // Aggiorno il modello con la guida modificata
     updateGuide: function (index, obj) {
-      var pippo = this.getGuides()[index];
+      
     }
 
   };
@@ -91,7 +91,7 @@
       // Al click su un righello -> devo invocare il metodo addNewGuide che aggiorna l'array con la nuova guida.
       // Dopo ritorno nella view e renderizzo nuovamente tutte le guide
       for (var j = 0; j < this.rules.length; j++) {
-        this.rules[j].addEventListener('click', (function(e) {
+        this.rules[j].addEventListener('click', (function(e, index) {
           return function() {
             // agiungo la classe specifica e posizioni random per top e left
             var typeClass = (e.classList.contains('vollguides__rule--h') ? "vollguides__line--h" : "vollguides__line--v");
@@ -105,10 +105,12 @@
               left: leftPos
             };
 
+            console.log(index)  
+
             // aggiorno l'array portandomi dietro newGuideObj
             octopus.addNewGuide(newGuideObj);
           }
-        })(this.rules[j]));
+        })(this.rules[j], j));
         
       }
 
@@ -132,11 +134,12 @@
         last.addClass(guides[i].type).css({top: guides[i].top, left: guides[i].left});
       };
 
+      /*
       var draggableElems = document.querySelectorAll('.vollguides__line');
       var draggies = [];
       var typeClass;
       var dragAxis;
-      for ( var l=0, len = draggableElems.length; l < len; l++ ) {
+      for ( var l=0; l < draggableElems.length; l++ ) {
         var draggableElem = draggableElems[l];
         if(draggableElem.classList.contains('vollguides__line--h')) {
           typeClass = 'vollguides__line--h';
@@ -149,19 +152,22 @@
           axis: dragAxis
         });
         draggies.push(draggie);
-        draggie.on( 'dragEnd', (function(g, event, pointer ) {
+        draggie.on( 'dragEnd', (function(g) {
           return function() {
             var newGuideObj = {
-              //type: typeClass,
-              //top: pointer.screenY,
-              //left: pointer.screenX
+              type: typeClass,
+              top: g.offsetTop,
+              left: g.offsetLeft
             };
+
+            var localIndex = console.log(g)
 
             // aggiorno l'array portandomi dietro newGuideObj e la index corrente
             octopus.updateGuide(g , newGuideObj);
           }
         })(draggableElems[l]));
       }
+      */
 
     }
 
