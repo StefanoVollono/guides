@@ -45,7 +45,14 @@
 
     // Aggiorno il modello con la guida modificata
     updateGuide: function (index, obj) {
-      
+      var my_array = this.getGuides();
+      console.log('old ' + model.guides);
+      var start_index = index
+      var removed_elements = this.getGuides().splice(index, 1, obj);
+      console.log('new ' + model.guides);
+
+      // renderizzo le view
+      guidesWiew.render();
     }
 
   };
@@ -105,8 +112,6 @@
               left: leftPos
             };
 
-            console.log(index)  
-
             // aggiorno l'array portandomi dietro newGuideObj
             octopus.addNewGuide(newGuideObj);
           }
@@ -121,6 +126,9 @@
 
     render: function () {
 
+      var draggies = [];
+      var typeClass, dragAxis;
+
       // empty the guide list 
       this.guideCollection.innerHTML = '';
 
@@ -129,16 +137,56 @@
 
       // Renderizzo le guide in base all'array (al primo giro non ce ne sono 2 di esempio)
       for (var i = 0; i < guides.length; i++) {
-        this.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>');
-        var last = $( ".vollguides__collection" ).find('> div').last();
-        last.addClass(guides[i].type).css({top: guides[i].top, left: guides[i].left});
+        (function(index){
+          guidesWiew.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>');
+          var last = $( ".vollguides__collection" ).find('> div').last();
+          last.addClass(guides[i].type).css({top: guides[i].top, left: guides[i].left});
+
+          // Utilizzo draggabilly per draggare le singole guide
+          var draggableElems = document.querySelectorAll('.vollguides__line');
+          var draggableElem = draggableElems[index];
+          if(draggableElem.classList.contains('vollguides__line--h')) {
+            //typeClass = 'vollguides__line--h';
+            dragAxis = 'y';
+          } else {
+            //typeClass = 'vollguides__line--v';
+            dragAxis = 'x';
+          }
+          var draggie = new Draggabilly( draggableElem, {
+            axis: dragAxis
+          });
+          draggies.push(draggie);
+          draggie.on('dragEnd', function(event, pointer) {
+              var loc_index = index;
+              var obj = {
+                type: draggableElem.classList[1],
+                top: this.position.y,
+                left: this.position.x
+              };
+
+              // aggiorno l'array portandomi dietro newGuideObj e la index corrente
+              octopus.updateGuide(loc_index, obj);
+          
+          });
+        })(i);
       };
+
+
+
+
+
+
+
+
+
+
+
 
       /*
       var draggableElems = document.querySelectorAll('.vollguides__line');
       var draggies = [];
-      var typeClass;
-      var dragAxis;
+      var typeClass, dragAxis;
+      
       for ( var l=0; l < draggableElems.length; l++ ) {
         var draggableElem = draggableElems[l];
         if(draggableElem.classList.contains('vollguides__line--h')) {
@@ -152,7 +200,7 @@
           axis: dragAxis
         });
         draggies.push(draggie);
-        draggie.on( 'dragEnd', (function(g) {
+        draggie.on( 'dragEnd', (function() {
           return function() {
             var newGuideObj = {
               type: typeClass,
@@ -165,7 +213,7 @@
             // aggiorno l'array portandomi dietro newGuideObj e la index corrente
             octopus.updateGuide(g , newGuideObj);
           }
-        })(draggableElems[l]));
+        })());
       }
       */
 
