@@ -1,3 +1,4 @@
+import './guides.scss';
 import $ from "jquery";
 import Draggabilly from 'draggabilly';
 
