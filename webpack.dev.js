@@ -7,7 +7,7 @@ module.exports = {
   // https://webpack.js.org/concepts/entry-points/#multi-page-application
   entry: {
     jquery: "jquery",
-    index: "./src/index.js",
+    demo: "./src/demo.js",
   },
 
   // This option controls if and how source maps are generated.
@@ -22,10 +22,10 @@ module.exports = {
   // https://webpack.js.org/concepts/plugins/
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
+      template: "./src/demo.html",
       inject: true,
-      chunks: ["index"],
-      filename: "index.html",
+      chunks: ["demo"],
+      filename: "demo.html",
     }),
   ],
 
