@@ -50,7 +50,7 @@ body::selection{
     &--h {
       height: 15px;
       width: 100%;
-      //background-image: url('chrome-extension://__MSG_@@extension_id__/images/hruler.png');
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/hruler.png');
       left: 15px;
       right: 0;
       top: 0;
@@ -64,7 +64,7 @@ body::selection{
     &--v {
       height: 100%;
       width: 15px;
-      //background-image: url('chrome-extension://__MSG_@@extension_id__/images/vruler.png');
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/vruler.png');
       top: 15px;
       bottom: 0;
       left: 0;

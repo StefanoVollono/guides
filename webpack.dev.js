@@ -6,6 +6,7 @@ module.exports = {
 
   // https://webpack.js.org/concepts/entry-points/#multi-page-application
   entry: {
+    jquery: "jquery",
     index: "./src/index.js",
   },
 
@@ -34,20 +35,6 @@ module.exports = {
         test: /.s?css$/,
         use: ["style-loader", 'css-loader', "resolve-url-loader", 'sass-loader'],
       },
-      // {
-      //   test: /\.(png|svg|jpe?g|gif)$/,
-      //   include: /images/,
-      //   use: [
-      //     {
-      //       loader: "file-loader",
-      //       options: {
-      //         name: "[name].[ext]",
-      //         outputPath: "images/",
-      //         publicPath: "images/",
-      //       },
-      //     },
-      //   ],
-      // },
     ],
   },
 };
