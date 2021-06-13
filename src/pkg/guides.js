@@ -1,6 +1,69 @@
 import $ from "jquery";
 import Draggabilly from 'draggabilly';
 
+const GUIDE_TYPES = {
+  GUIDE_HORIZONTAL: 'vollguides__line--h',
+  GUIDE_VERTICAL: 'vollguides__line--v'
+}
+
+class Model {
+  constructor() {
+    // il modello di base mette a disposizione 2 guide.
+    this.guides = [
+      { id: 1, type: "vollguides__line--h", left: 111, top: 111 },
+      { id: 2, type: "vollguides__line--v", left: 222, top: 222 },
+      { id: 3, type: "vollguides__line--v", left: 333, top: 333 }
+    ]
+  }
+
+  // Add new guide to model
+  addGuide(guide) {
+    const localId = this.guides.length > 0 ? this.guides[this.guides.length - 1].id + 1 : 1;
+    const localGuide = {
+      id: localId,
+      ...guide,
+    }
+    this.guides.push(localGuide);
+  }
+
+  deleteGuide(id) {
+    this.guides = this.guides.filter( (guide) => {
+      return id !== guide.id
+    })
+  }
+
+  // 
+  updateGuide(guide) {
+    // const guides = this.guides;
+    this.guides.map((elem, index) => {
+      if (elem.id === guide.id) {
+        this.guides[index+1].left = guide.left
+        this.guides[index+1].top = guide.top
+      }
+    });
+    debugger;
+  }
+}
+
+class View {
+  constructor() {}
+}
+
+class Controller {
+  constructor(model, view) {
+    this.model = model;
+    this.view = view;
+  }
+}
+
+const guides = new Controller(new Model(), new View());
+
+// guides.model.addGuide({ type:'vollguides__line--h', left: 444, top: 444 })
+// guides.model.deleteGuide(2);
+// guides.model.updateGuide({id: 3, type:'vollguides__line--h', left: 1111, top: 1111})
+// console.log(guides.model.guides);
+
+/*
 (function() {
   "use strict";
 
@@ -191,3 +254,4 @@ import Draggabilly from 'draggabilly';
   octopus.init();
 
 })();
+*/
