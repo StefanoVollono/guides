@@ -1,26 +1,25 @@
 {
-  "manifest_version": 2,
-  "name": "Guides",
+  "name": "Guides---dev",
   "description": "Simple generator draggable guides. Double-click on the rules to create a new guide. Press ESC to close.",
   "version": "1.2",
+  "manifest_version": 2,
   "homepage_url": "https://github.com/StefanoVollono/guides",
+  "background": {
+    "service_worker": "background.js"
+  },
   "permissions": [
     "activeTab"
-  ],
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
-  "browser_action": {
-    "default_title": "Click to start, esc to exit"
-  },
-  "web_accessible_resources": [
-    "images/hruler.png",
-    "images/vruler.png"
   ],
   "icons": {
     "19":   "images/icons/icon19.png",
     "48":   "images/icons/icon48.png",
     "128":  "images/icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    "images/hruler.png",
+    "images/vruler.png"
+  ],
+  "browser_action": {
+    "default_title": "Click to start, esc to exit"
   }
 }
