@@ -7,13 +7,30 @@ const GUIDE_TYPES = {
   GUIDE_VERTICAL: 'vollguides__line--v'
 }
 
+class DomUtilities {
+  constructor() {}
+
+  // Create an element with an optional CSS class
+  createElement(tag, className) {
+    const element = document.createElement(tag)
+    if (className) element.classList.add(className)
+    return element
+  }
+
+  // Retrieve an element from the DOM
+  getElement(selector) {
+    const element = document.querySelector(selector)
+    return element
+  }
+}
+
 class Model {
   constructor() {
     // il modello di base mette a disposizione 2 guide.
     this.guides = [
-      { id: 1, type: "vollguides__line--h", left: 111, top: 111 },
-      { id: 2, type: "vollguides__line--v", left: 222, top: 222 },
-      { id: 3, type: "vollguides__line--v", left: 333, top: 333 }
+      { id: 1, type: "vollguides__line--h", left: 15, top: 111 },
+      { id: 2, type: "vollguides__line--v", left: 222, top: 15 },
+      { id: 3, type: "vollguides__line--v", left: 333, top: 15 }
     ]
   }
 
@@ -46,14 +63,79 @@ class Model {
   }
 }
 
-class View {
-  constructor() {}
+class View extends DomUtilities {
+  constructor() {
+    super();
+
+    this.app = this.getElement('body');
+    this.wrapper = this.createElement('div', 'vollguides');
+    this.overlay = this.createElement('div', 'vollguides__overlay');
+    this.tooltip = this.createElement('div', 'vollguides__tooltip');
+    this.collection = this.createElement('div', 'vollguides__collection');
+
+    // By design, you are not able to place a single element in more than one location in the DOM. 
+    // If you desire, you can create a duplicate of a node by using cloneNode(). You can then insert that duplicate into the DOM at a different location.
+    this.rulePointerH = this.createElement('div', 'vollguides__rule-pointer');
+    this.rulePointerV = this.rulePointerH.cloneNode(true);
+
+    // rules
+    this.rulesH = this.createElement('div');
+    this.rulesH.classList.add('vollguides__rule', 'vollguides__rule--h');
+    this.rulesH.append(this.rulePointerH);
+
+    this.rulesV = this.createElement('div');
+    this.rulesV.classList.add('vollguides__rule', 'vollguides__rule--v');
+    this.rulesV.append(this.rulePointerV);
+
+    // build template
+    this.wrapper.append(this.overlay, this.tooltip, this.rulesH, this.rulesV, this.collection);
+    this.app.append(this.wrapper);
+  }
+
+  displayGuides(guides) {
+    guides.forEach( (guide) => {
+      const guideLine = this.createElement('div', 'vollguides__line-inner');
+      const localGuideClass = (guide.type === GUIDE_TYPES.GUIDE_HORIZONTAL ? GUIDE_TYPES.GUIDE_HORIZONTAL : GUIDE_TYPES.GUIDE_VERTICAL);
+      const localGuide = this.createElement('div');
+      localGuide.classList.add('vollguides__line', localGuideClass);
+      localGuide.setAttribute('id', guide.id);
+      localGuide.style.left = `${guide.left}px`;
+      localGuide.style.top = `${guide.top}px`;
+      localGuide.append(guideLine);
+      this.collection.append(localGuide)
+    });
+  }
+
+  bindAddGuide(handler) {
+    this.rulesH.addEventListener('dblclick', event => {
+      event.preventDefault();
+      
+      const newGuideObj = {
+        type: (event.currentTarget.classList.contains('vollguides__rule--h') ? "vollguides__line--h" : "vollguides__line--v"),
+        top: (event.currentTarget.classList.contains('vollguides__rule--h') ? (25 + Math.floor(Math.random() * (200 - 15)) + 15) : 15),
+        left: (event.currentTarget.classList.contains('vollguides__rule--h') ? 15 : Math.floor((Math.random() * (200 - 15)) + 15))
+      };
+      
+      handler(newGuideObj)
+    })
+  }
 }
 
 class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
+
+    this.view.bindAddGuide(this.handleAddGuide);
+    this.onGuideListChanged(this.model.guides);
+  }
+
+  onGuideListChanged = (guides) => {
+    this.view.displayGuides(guides)
+  }
+
+  handleAddGuide = (guide) => {
+    this.model.addGuide(guide)
   }
 }
 
