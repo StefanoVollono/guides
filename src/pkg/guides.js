@@ -29,9 +29,14 @@ class Model {
     // il modello di base mette a disposizione 2 guide.
     this.guides = [
       { id: 1, type: "vollguides__line--h", left: 15, top: 111 },
-      { id: 2, type: "vollguides__line--v", left: 222, top: 15 },
-      { id: 3, type: "vollguides__line--v", left: 333, top: 15 }
+      { id: 2, type: "vollguides__line--v", left: 222, top: 15 }
     ]
+  }
+
+  // Metodo che accetta come callback, la referenza bindata di Controller.onGuideListChanged
+  // (il metodo del controller che richiama la view per renderizzare la lista)
+  bindGuideListChanged(callback) {
+    this.onGuideListChanged = callback;
   }
 
   // Add new guide to model
@@ -42,6 +47,9 @@ class Model {
       ...guide,
     }
     this.guides.push(localGuide);
+
+    // Questo metodo punta alla callback passata come argomento di bindGuideListChanged
+    this.onGuideListChanged(this.guides)
   }
 
   deleteGuide(id) {
@@ -52,14 +60,17 @@ class Model {
 
   // 
   updateGuide(guide) {
-    // const guides = this.guides;
+    // this.guides().splice(guide.id - 1, 1, guide);
     this.guides.map((elem, index) => {
       if (elem.id === guide.id) {
-        this.guides[index+1].left = guide.left
-        this.guides[index+1].top = guide.top
+
+        this.guides[guide.id - 1].left = guide.left
+        this.guides[guide.id - 1].top = guide.top
       }
     });
-    debugger;
+
+    // Questo metodo punta alla callback passata come argomento di bindGuideListChanged
+    this.onGuideListChanged(this.guides)
   }
 }
 
@@ -67,11 +78,16 @@ class View extends DomUtilities {
   constructor() {
     super();
 
+    this.draggies = [];
+    this._temporaryGuide;
+
+
     this.app = this.getElement('body');
     this.wrapper = this.createElement('div', 'vollguides');
     this.overlay = this.createElement('div', 'vollguides__overlay');
     this.tooltip = this.createElement('div', 'vollguides__tooltip');
     this.collection = this.createElement('div', 'vollguides__collection');
+
 
     // By design, you are not able to place a single element in more than one location in the DOM. 
     // If you desire, you can create a duplicate of a node by using cloneNode(). You can then insert that duplicate into the DOM at a different location.
@@ -93,31 +109,107 @@ class View extends DomUtilities {
   }
 
   displayGuides(guides) {
-    guides.forEach( (guide) => {
+
+    // Delete all nodes
+    while (this.collection.firstChild) {
+      this.collection.removeChild(this.collection.firstChild)
+    }
+    
+    // Delete all draggies
+    this.draggies = [];
+
+    guides.forEach( (guide, index) => {
       const guideLine = this.createElement('div', 'vollguides__line-inner');
       const localGuideClass = (guide.type === GUIDE_TYPES.GUIDE_HORIZONTAL ? GUIDE_TYPES.GUIDE_HORIZONTAL : GUIDE_TYPES.GUIDE_VERTICAL);
+      
       const localGuide = this.createElement('div');
       localGuide.classList.add('vollguides__line', localGuideClass);
       localGuide.setAttribute('id', guide.id);
+      localGuide.setAttribute('draggable', true);
       localGuide.style.left = `${guide.left}px`;
       localGuide.style.top = `${guide.top}px`;
+
       localGuide.append(guideLine);
-      this.collection.append(localGuide)
+      this.collection.append(localGuide);
+
+      const draggie = new Draggabilly( localGuide, {
+        axis: localGuide.classList.contains(GUIDE_TYPES.GUIDE_HORIZONTAL) ? 'y' : 'x',
+        grid: [1,1]
+      });
+
+      this.draggies.push( draggie );
+      
     });
+
+    // this._temporaryGuide = draggie;
+
+    // const draggableElems = document.querySelectorAll('.vollguides__line');
+
+    // for (var i = 0; i < guides.length; i++) {
+    //   ( (index) => {
+    //     const draggableElem = draggableElems[index];
+        
+    //     // attach draggabilly to each vollguides__line
+    //     const draggie = new Draggabilly( draggableElem, {
+    //       axis: draggableElem.classList.contains(GUIDE_TYPES.GUIDE_HORIZONTAL) ? 'y' : 'x',
+    //       grid: [1, 1]
+    //     });
+
+    //     this.draggies.push( draggie );
+
+    //     // draggie.on('dragEnd', (event, pointer) => {
+    //     //   console.log(this)
+    //     //   debugger
+    //     //   this._temporaryTodoText = {
+    //     //     id: parseInt(this.draggies[index].element.id),
+    //     //     type: this.draggies[index].element.classList[1],
+    //     //     top: this.draggies[index].position.y,
+    //     //     left: this.draggies[index].position.x
+    //     //   };
+    //     // })
+    //   })(i);  
+    // }
   }
 
-  bindAddGuide(handler) {
-    this.rulesH.addEventListener('dblclick', event => {
-      event.preventDefault();
-      
-      const newGuideObj = {
-        type: (event.currentTarget.classList.contains('vollguides__rule--h') ? "vollguides__line--h" : "vollguides__line--v"),
-        top: (event.currentTarget.classList.contains('vollguides__rule--h') ? (25 + Math.floor(Math.random() * (200 - 15)) + 15) : 15),
-        left: (event.currentTarget.classList.contains('vollguides__rule--h') ? 15 : Math.floor((Math.random() * (200 - 15)) + 15))
-      };
-      
-      handler(newGuideObj)
+  bindAddGuide(handler) { // -> Controller.handleAddGuide
+    [this.rulesH, this.rulesV].forEach( item => {
+      item.addEventListener('dblclick', event => {
+        event.preventDefault();
+
+        const newGuideObj = {
+          type: (event.currentTarget.classList.contains('vollguides__rule--h') ? "vollguides__line--h" : "vollguides__line--v"),
+          top: (event.currentTarget.classList.contains('vollguides__rule--h') ? (25 + Math.floor(Math.random() * (200 - 15)) + 15) : 15),
+          left: (event.currentTarget.classList.contains('vollguides__rule--h') ? 15 : Math.floor((Math.random() * (200 - 15)) + 15))
+        };
+
+        handler(newGuideObj)
+      })
     })
+  }
+
+  bindEditGuide(handler) {  
+    
+    this.collection.addEventListener('mousemove', event => {
+      const draggiesFiltered = this.draggies.filter((draggy)=>{
+        return parseInt(draggy.element.id) === parseInt(event.target.id)
+      });
+      const draggable = draggiesFiltered[0];
+      
+      if (draggable) {
+        draggable.on('dragEnd', function(event, pointer) {
+          this._temporaryTodoText = {
+            id: parseInt(this.element.id),
+            type: this.element.classList[1],
+            top: this.position.y,
+            left: this.position.x
+          };
+
+          handler(this._temporaryTodoText);
+          this._temporaryTodoText = null;
+        });
+      }
+    })
+
   }
 }
 
@@ -126,8 +218,13 @@ class Controller {
     this.model = model;
     this.view = view;
 
-    this.view.bindAddGuide(this.handleAddGuide);
     this.onGuideListChanged(this.model.guides);
+
+    this.view.bindAddGuide(this.handleAddGuide);
+    this.view.bindEditGuide(this.handleEditGuide);
+
+    // Cosi facendo sto legando (bind) il metodo del controller (onGuideListChanged) al modello, passando in callback la sua referenza
+    this.model.bindGuideListChanged(this.onGuideListChanged)
   }
 
   onGuideListChanged = (guides) => {
@@ -137,14 +234,13 @@ class Controller {
   handleAddGuide = (guide) => {
     this.model.addGuide(guide)
   }
+
+  handleEditGuide = (guide) => {
+    this.model.updateGuide(guide)
+  }
 }
 
 const guides = new Controller(new Model(), new View());
-
-// guides.model.addGuide({ type:'vollguides__line--h', left: 444, top: 444 })
-// guides.model.deleteGuide(2);
-// guides.model.updateGuide({id: 3, type:'vollguides__line--h', left: 1111, top: 1111})
-// console.log(guides.model.guides);
 
 /*
 (function() {

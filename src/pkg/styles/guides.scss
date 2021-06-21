@@ -99,7 +99,7 @@ body::selection{
 
   // Guide
   &__line {
-    position: fixed;
+    position: fixed!important;
     cursor: pointer;
     z-index: 190000;
 
