@@ -5,7 +5,7 @@
 
     currentGuide: null,
 
-    // todo: contiene la lista di guide create :: potrei usarla per salvarla nel localstorage o svuotarla inserendo un bottone destroy-all
+    // contiene la lista di guide create
     guides: [
       {
         type: 'vollguides__line--h',
@@ -56,7 +56,7 @@
   var structureView = {
 
     init: function () {
-
+      const wrap = document.querySelector('.vollguides');
       this.bodyElem   = document.querySelector('body');
       this.template = '<div class="vollguides">' +
                         '<div class="vollguides__overlay"></div>' +
@@ -69,11 +69,8 @@
                         '</div>' +
                         '<div class="vollguides__collection"></div>' +
                       '</div>';
-
-                      
-
-      this.render();
-
+      // Se all'init è gia presente il wrap, lo elimino.
+      wrap ? wrap.remove() : this.render();
     },
 
     render: function () {
@@ -102,17 +99,14 @@
           structureView.guideWrap.remove();
         }
       }));
-      
 
-    }
+    },
 
   };
-
 
   var guidesWiew = {
 
     init: function () {
-
       this.guideCollection  = document.querySelector('.vollguides__collection'); // Contenitore delle guide
       this.rules = document.querySelectorAll('.vollguides__rule'); // righelli
 
@@ -157,50 +151,40 @@
       var guides = octopus.getGuides();
 
       // Renderizzo le guide in base all'array (al primo giro non ce ne sono 2 di esempio)
-      for (var i = 0; i < guides.length; i++) {
-        (function(index){
-          guidesWiew.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>');
-          var last = $( ".vollguides__collection" ).find('> div').last();
-          last.addClass(guides[i].type).css({top: guides[i].top, left: guides[i].left});
+      Array.prototype.forEach.call(guides, (guide, index) => {
+        guidesWiew.guideCollection.insertAdjacentHTML('beforeend', '<div class="vollguides__line"><div class="vollguides__line-inner"></div></div>');
+        var last = Array.from(document.querySelectorAll('.vollguides__collection > div')).pop();
+        last.classList.add(guides[index].type);
+        last.style.cssText = `top: ${guides[index].top}px; left: ${guides[index].left}px`;
+        
+        // Utilizzo draggabilly per draggare le singole guide
+        var draggableElems = document.querySelectorAll('.vollguides__line');
+        var draggableElem = draggableElems[index];
+        if(draggableElem.classList.contains('vollguides__line--h')) {
+          //typeClass = 'vollguides__line--h';
+          dragAxis = 'y';
+        } else {
+          //typeClass = 'vollguides__line--v';
+          dragAxis = 'x';
+        }
+        var draggie = new Draggabilly( draggableElem, { axis: dragAxis });
+        draggies.push(draggie);
+        draggie.on('dragEnd', function(event, pointer) {
+            var loc_index = index;
+            var obj = {
+              type: draggableElem.classList[1],
+              top: this.position.y,
+              left: this.position.x
+            };
 
-          // Utilizzo draggabilly per draggare le singole guide
-          var draggableElems = document.querySelectorAll('.vollguides__line');
-          var draggableElem = draggableElems[index];
-          if(draggableElem.classList.contains('vollguides__line--h')) {
-            //typeClass = 'vollguides__line--h';
-            dragAxis = 'y';
-          } else {
-            //typeClass = 'vollguides__line--v';
-            dragAxis = 'x';
-          }
-          var draggie = new Draggabilly( draggableElem, {
-            axis: dragAxis
-          });
-          draggies.push(draggie);
-          draggie.on('dragEnd', function(event, pointer) {
-              var loc_index = index;
-              var obj = {
-                type: draggableElem.classList[1],
-                top: this.position.y,
-                left: this.position.x
-              };
-
-              // aggiorno l'array portandomi dietro newGuideObj e la index corrente
-              octopus.updateGuide(loc_index, obj);
-          
-          });
-        })(i);
-      };
-
+            // aggiorno l'array portandomi dietro newGuideObj e la index corrente
+            octopus.updateGuide(loc_index, obj);
+        });
+      });
     }
-
-
   };
 
   // make it go!
   octopus.init();
-
-  
-
 
 })();
