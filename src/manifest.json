@@ -1,26 +1,34 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Guides",
-  "description": "Simple generator draggable guides. Double-click on the rules to create a new guide. Press ESC to close.",
+  "description": "Simple generator draggable guides. Double-click on the rules to create a new guide. Press ESC or click on icon to close.",
   "version": "1.4",
   "homepage_url": "https://github.com/StefanoVollono/guides",
-  "permissions": [
-    "activeTab"
-  ],
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "service_worker": "background.js"
   },
-  "browser_action": {
-    "default_title": "Click to start, esc to exit"
+  "action": {
+    "default_icon": {
+      "19":   "images/icons/icon19.png",
+      "48":   "images/icons/icon48.png",
+      "128":  "images/icons/icon128.png"
+    }
   },
-  "web_accessible_resources": [
-    "images/hruler.png",
-    "images/vruler.png"
+  "permissions": [
+    "activeTab",
+    "scripting"
   ],
-  "icons": {
-    "19":   "images/icons/icon19.png",
-    "48":   "images/icons/icon48.png",
-    "128":  "images/icons/icon128.png"
-  }
+  "web_accessible_resources": [
+    {
+      "resources": [ "images/hruler.png", "images/vruler.png" ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["guides.css"],
+      "js": ["draggabilly.js", "guides.js"]
+    }
+  ]
 }
