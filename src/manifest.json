@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Guides",
   "description": "Simple generator draggable guides. Double-click on the rules to create a new guide. Press ESC or click on icon to close.",
-  "version": "1.4",
+  "version": "1.5",
   "homepage_url": "https://github.com/StefanoVollono/guides",
   "background": {
     "service_worker": "background.js"
