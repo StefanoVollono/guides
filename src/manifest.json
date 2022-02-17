@@ -23,12 +23,5 @@
       "resources": [ "images/hruler.png", "images/vruler.png" ],
       "matches": ["<all_urls>"]
     }
-  ],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "css": ["guides.css"],
-      "js": ["draggabilly.js", "guides.js"]
-    }
   ]
 }
