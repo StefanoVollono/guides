@@ -4,6 +4,6 @@
 
 ![GitHub Logo](https://lh6.googleusercontent.com/w1Wj1gaOQutfTpqmBjp-2KxtpequkECHTR2GcyaZckZGfUfccnN3OoiJ62ED_8mc-QApHvdgrxo=s640-h400-e365-rw)
 
-1. Install this extension from [Chrome web store](https://chrome.google.com/webstore/detail/guides/hfpokjeoalngkknelljbenaobinichjf?hl=it)
-2. Double click on a ruler to create a new guide. 
-3. ESC key to exit the application.
+1. Install this extension from [Chrome web store](https://chrome.google.com/webstore/detail/guides/hfpokjeoalngkknelljbenaobinichjf)
+2. Double click on a ruler to create a new guide.
+3. ESC key or click on browser icon to exit/enter the application.

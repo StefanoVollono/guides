@@ -5,6 +5,6 @@ chrome.action.onClicked.addListener((tab) => {
   });
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    files: ['draggabilly.js', 'guides.js'],
+    files: ['guides.js'],
   });
 });

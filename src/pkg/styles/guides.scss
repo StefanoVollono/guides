@@ -1,11 +1,16 @@
-/* General */
+/* Host page Styles */
 body::selection{
   background:transparent;
 }
 
-// Guides component
+// Guides Styles
 .vollguides {
   $root: &;
+
+  --color-black:  #000000;
+  --color-white:  #ffffff;
+  --color-pointer:#960000;
+  --color-line:   #4affff;
 
   // Overlay
   &__overlay {
@@ -17,23 +22,23 @@ body::selection{
     bottom: 0;
     right: 0;
     opacity: .35;
-    background-color: black;
+    background-color: var(--color-black);
     z-index: 170000;
     cursor: crosshair
   }
 
   // Tooltip
   &__tooltip {
-    background: black;
+    background: var(--color-black);
     padding: 2px 4px;
     border-radius: 3px;
-    color: white;
+    color: var(--color-white);
     position: absolute;
     z-index: 22000;
     font-size: 10px;
     font-family: Arial, sans-serif;
     font-weight: bold;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 10px rgba(var(--color-black), 0.6);
 
     &::selection {
       background: transparent;
@@ -44,7 +49,7 @@ body::selection{
   &__rule {
     position: fixed;
     z-index: 1999999999;
-    background-color: white;
+    background-color: var(--color-white);
 
     // Orizzontale
     &--h {
@@ -77,7 +82,7 @@ body::selection{
     // Indicatori
     &-pointer {
       position: absolute;
-      background-color: red;
+      background-color: var(--color-pointer);
       display: block;
 
       #{$root}__rule--h & {
@@ -90,16 +95,14 @@ body::selection{
         width: 15px;
         height: 1px;
         left: 0;
-
       }
-
     }
 
   }
 
   // Guide
   &__line {
-    position: fixed;
+    position: fixed!important;
     cursor: pointer;
     z-index: 190000;
 
@@ -125,7 +128,7 @@ body::selection{
       display: block;
       position: absolute;
       content: '';
-      background: #4affff;
+      background: var(--color-line);
 
       #{$root}__line--h & {
         height: 1px;
@@ -140,9 +143,7 @@ body::selection{
         left: 2px;
         top: 0;
       }
-
     }
-
   }
 
 }

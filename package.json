@@ -1,0 +1,37 @@
+{
+  "name": "guides",
+  "version": "2.0.1",
+  "description": "This simple app allows you to create and modify horizontal and vertical guides to check if the elements in the page are correctly aligned.",
+  "main": "demo.js",
+  "scripts": {
+    "start": "webpack serve --open --config webpack.dev.js --mode development",
+    "build": "webpack --config webpack.prod.js --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StefanoVollono/guides.git"
+  },
+  "author": "Stefano Vollono",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StefanoVollono/guides/issues"
+  },
+  "homepage": "https://github.com/StefanoVollono/guides#readme",
+  "devDependencies": {
+    "copy-webpack-plugin": "^10.2.4",
+    "css-loader": "^6.6.0",
+    "css-minimizer-webpack-plugin": "^3.4.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.5.3",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.49.8",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  },
+  "dependencies": {
+    "draggabilly": "^3.0.0"
+  }
+}
