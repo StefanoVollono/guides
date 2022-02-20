@@ -79,12 +79,6 @@ class View extends DomUtilities {
     this.draggies = [];
     this._temporaryGuide;
 
-    // check if wrap exist before init
-    if (this.getElement('.vollguides')) {
-      this.getElement('.vollguides').remove();
-      return;
-    }
-
     this.app = this.getElement('body');
     this.wrapper = this.createElement('div', 'vollguides');
     this.overlay = this.createElement('div', 'vollguides__overlay');
@@ -242,4 +236,5 @@ class Controller {
   }
 }
 
-const guides = new Controller(new Model(), new View());
+const wrap = document.querySelector('.vollguides');
+wrap ? wrap.remove() : new Controller(new Model(), new View());
