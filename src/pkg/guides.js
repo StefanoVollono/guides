@@ -51,12 +51,6 @@ class Model {
     this.onGuideListChanged(this.guides)
   }
 
-  deleteGuide(id) {
-    this.guides = this.guides.filter( (guide) => {
-      return id !== guide.id
-    })
-  }
-
   // update guide
   updateGuide(guide) {
     this.guides.map((elem, index) => {
@@ -69,6 +63,14 @@ class Model {
 
     // Questo metodo punta alla callback passata come argomento di bindGuideListChanged
     this.onGuideListChanged(this.guides)
+  }
+
+  // delete a guide by ID
+  deleteGuide(id) {
+    this.guides = this.guides.filter(function(guide, index, arr){ 
+      return guide.id !== id;
+    });
+    this.onGuideListChanged(this.guides);
   }
 }
 
@@ -146,7 +148,7 @@ class View extends DomUtilities {
       localGuide.style.left = `${guide.left}px`;
       localGuide.style.top = `${guide.top}px`;
 
-      localGuide.append(guideLine);
+      // localGuide.append(guideLine);
       this.collection.append(localGuide);
 
       const draggie = new Draggabilly( localGuide, {
@@ -207,6 +209,16 @@ class View extends DomUtilities {
       }
     })
   }
+
+  bindDeleteGuide(handler) {
+    [this.collection].forEach(guide => {
+      guide.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        const localId = e.target.getAttribute('id');
+        handler(parseInt(localId))
+      });
+    });
+  }
 }
 
 class Controller {
@@ -218,6 +230,7 @@ class Controller {
 
     this.view.bindAddGuide(this.handleAddGuide);
     this.view.bindEditGuide(this.handleEditGuide);
+    this.view.bindDeleteGuide(this.handleDeleteGuide);
 
     // Cosi facendo sto legando (bind) il metodo del controller (onGuideListChanged) al modello, passando in callback la sua referenza
     this.model.bindGuideListChanged(this.onGuideListChanged)
@@ -233,6 +246,10 @@ class Controller {
 
   handleEditGuide = (guide) => {
     this.model.updateGuide(guide)
+  }
+
+  handleDeleteGuide = (guide) => {
+    this.model.deleteGuide(guide)
   }
 }
 

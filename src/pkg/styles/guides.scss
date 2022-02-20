@@ -106,6 +106,13 @@ body::selection{
     cursor: pointer;
     z-index: 190000;
 
+    &:after {
+      display: block;
+      position: absolute;
+      content: '';
+      background: var(--color-line);
+    }
+
     // Contenitore Linea orizzontale
     &--h {
       height: 5px;
@@ -113,6 +120,13 @@ body::selection{
       left: 15px;
       top: 30px;
       cursor: ns-resize;
+
+      &:after  {
+        height: 1px;
+        width: 100%;
+        top: 2px;
+        left: 0;
+      }
     }
 
     &--v {
@@ -121,23 +135,8 @@ body::selection{
       top: 15px;
       left: 30px;
       cursor: ew-resize;
-    }
 
-    // linea azzurra
-    &-inner {
-      display: block;
-      position: absolute;
-      content: '';
-      background: var(--color-line);
-
-      #{$root}__line--h & {
-        height: 1px;
-        width: 100%;
-        top: 2px;
-        left: 0;
-      }
-
-      #{$root}__line--v & {
+      &:after {
         height: 100%;
         width: 1px;
         left: 2px;
