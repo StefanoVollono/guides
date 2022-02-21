@@ -1,7 +1,7 @@
 {
   "name": "guides",
-  "version": "2.0.1",
-  "description": "This simple app allows you to create and modify horizontal and vertical guides to check if the elements in the page are correctly aligned.",
+  "version": "2.1.0",
+  "description": "This simple app allows you to create modify and delete horizontal and vertical guides to check if the elements in the page are correctly aligned.",
   "main": "demo.js",
   "scripts": {
     "start": "webpack serve --open --config webpack.dev.js --mode development",
