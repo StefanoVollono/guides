@@ -53,13 +53,9 @@ class Model {
 
   // update guide
   updateGuide(guide) {
-    this.guides.map((elem, index) => {
-      if (elem.id === guide.id) {
-
-        this.guides[guide.id - 1].left = guide.left
-        this.guides[guide.id - 1].top = guide.top
-      }
-    });
+    this.guides = this.guides.map((g) =>
+      g.id === guide.id ? {id: g.id, left: guide.left, top: guide.top, type: g.type} : g,
+    )
 
     // Questo metodo punta alla callback passata come argomento di bindGuideListChanged
     this.onGuideListChanged(this.guides)
