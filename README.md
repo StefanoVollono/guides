@@ -1,6 +1,6 @@
 ## Guides
 
-### This simple app allows you to create modify and delete horizontal and vertical guides to check if the elements in the page are correctly aligned.
+### This simple app allows you to create modify and delete horizontal and vertical guides to check if the elements are correctly aligned.
 
 ![GitHub Logo](https://lh6.googleusercontent.com/w1Wj1gaOQutfTpqmBjp-2KxtpequkECHTR2GcyaZckZGfUfccnN3OoiJ62ED_8mc-QApHvdgrxo=s640-h400-e365-rw)
 

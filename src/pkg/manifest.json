@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Guides",
-  "description": "Simple generator draggable guides. Double-click on the rules to create a new guide. ESC key or click on browser icon to exit/enter the application. Double click on a guide to delete it.",
+  "description": "This simple app allows you to create modify and delete horizontal and vertical guides to check if the elements are correctly aligned",
   "version": "2.1.0",
   "homepage_url": "https://github.com/StefanoVollono/guides",
   "background": {
