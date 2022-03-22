@@ -1,6 +1,6 @@
 {
   "name": "guides",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "This simple app allows you to create modify and delete horizontal and vertical guides to check if the elements are correctly aligned",
   "main": "demo.js",
   "scripts": {
