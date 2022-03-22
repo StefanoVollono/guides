@@ -1,148 +1,147 @@
 /* Host page Styles */
 body::selection{
-  background:transparent;
+    background:transparent;
 }
 
 // Guides Styles
 .vollguides {
-  $root: &;
+    $root: &;
 
-  --color-black:  #000000;
-  --color-white:  #ffffff;
-  --color-pointer:#960000;
-  --color-line:   #4affff;
+    --color-black:  #000000;
+    --color-white:  #ffffff;
+    --color-pointer:#960000;
+    --color-line:   #4affff;
 
-  // Overlay
-  &__overlay {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 15px;
-    left: 15px;
-    bottom: 0;
-    right: 0;
-    opacity: .35;
-    background-color: var(--color-black);
-    z-index: 170000;
-    cursor: crosshair
-  }
-
-  // Tooltip
-  &__tooltip {
-    background: var(--color-black);
-    padding: 2px 4px;
-    border-radius: 3px;
-    color: var(--color-white);
-    position: absolute;
-    z-index: 22000;
-    font-size: 10px;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(var(--color-black), 0.6);
-
-    &::selection {
-      background: transparent;
+    // Overlay
+    &__overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 15px;
+        left: 15px;
+        bottom: 0;
+        right: 0;
+        opacity: .35;
+        background-color: var(--color-black);
+        z-index: 170000;
+        cursor: crosshair
     }
-  }
 
-  // Righelli
-  &__rule {
-    position: fixed;
-    z-index: 1999999999;
-    background-color: var(--color-white);
+    // Tooltip
+    &__tooltip {
+        background: var(--color-black);
+        padding: 2px 4px;
+        border-radius: 3px;
+        color: var(--color-white);
+        position: absolute;
+        z-index: 22000;
+        font-size: 10px;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        box-shadow: 0 0 10px rgba(var(--color-black), 0.6);
+
+        &::selection {
+            background: transparent;
+        }
+    }
+
+    // Righelli
+    &__rule {
+        position: fixed;
+        z-index: 1999999999;
+        background-color: var(--color-white);
 
     // Orizzontale
     &--h {
-      height: 15px;
-      width: 100%;
-      background-image: url('chrome-extension://__MSG_@@extension_id__/images/hruler.png');
-      left: 15px;
-      right: 0;
-      top: 0;
+        height: 15px;
+        width: 100%;
+        background-image: url('chrome-extension://__MSG_@@extension_id__/images/hruler.png');
+        left: 15px;
+        right: 0;
+        top: 0;
 
-      &:hover {
-        cursor: s-resize;
-      }
+        &:hover {
+            cursor: s-resize;
+        }
     }
 
     // Veticale
     &--v {
-      height: 100%;
-      width: 15px;
-      background-image: url('chrome-extension://__MSG_@@extension_id__/images/vruler.png');
-      top: 15px;
-      bottom: 0;
-      left: 0;
+        height: 100%;
+        width: 15px;
+        background-image: url('chrome-extension://__MSG_@@extension_id__/images/vruler.png');
+        top: 15px;
+        bottom: 0;
+        left: 0;
 
-      &:hover {
-        cursor: e-resize;
-      }
+        &:hover {
+            cursor: e-resize;
+        }
     }
 
     // Indicatori
     &-pointer {
-      position: absolute;
-      background-color: var(--color-pointer);
-      display: block;
+        position: absolute;
+        background-color: var(--color-pointer);
+        display: block;
 
-      #{$root}__rule--h & {
-        width: 1px;
-        height: 15px;
-        top: 0;
-      }
+        #{$root}__rule--h & {
+            width: 1px;
+            height: 15px;
+            top: 0;
+        }
 
-      #{$root}__rule--v & {
-        width: 15px;
-        height: 1px;
-        left: 0;
-      }
+        #{$root}__rule--v & {
+            width: 15px;
+            height: 1px;
+            left: 0;
+        }
     }
 
-  }
-
-  // Guide
-  &__line {
-    position: fixed!important;
-    cursor: pointer;
-    z-index: 190000;
-
-    &:after {
-      display: block;
-      position: absolute;
-      content: '';
-      background: var(--color-line);
     }
 
-    // Contenitore Linea orizzontale
-    &--h {
-      height: 5px;
-      width: 100%;
-      left: 15px;
-      top: 30px;
-      cursor: ns-resize;
+    // Guide
+    &__line {
+        position: fixed!important;
+        cursor: pointer;
+        z-index: 190000;
 
-      &:after  {
-        height: 1px;
-        width: 100%;
-        top: 2px;
-        left: 0;
-      }
+        &:after {
+            display: block;
+            position: absolute;
+            content: '';
+            background: var(--color-line);
+        }
+
+        // Contenitore Linea orizzontale
+        &--h {
+            height: 5px;
+            width: 100%;
+            left: 15px;
+            top: 30px;
+            cursor: ns-resize;
+
+            &:after  {
+                height: 1px;
+                width: 100%;
+                top: 2px;
+                left: 0;
+            }
+        }
+
+        &--v {
+            height: 100%;
+            width: 5px;
+            top: 15px;
+            left: 30px;
+            cursor: ew-resize;
+
+            &:after {
+                height: 100%;
+                width: 1px;
+                left: 2px;
+                top: 0;
+            }
+        }
     }
-
-    &--v {
-      height: 100%;
-      width: 5px;
-      top: 15px;
-      left: 30px;
-      cursor: ew-resize;
-
-      &:after {
-        height: 100%;
-        width: 1px;
-        left: 2px;
-        top: 0;
-      }
-    }
-  }
-
 }
